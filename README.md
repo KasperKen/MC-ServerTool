@@ -2,7 +2,7 @@
 
 This is a rewrite of a python 2 script my friends and I worked on a while back into python 3. I've elected to write the code the from scratch rather than fork it because the code is frankly an unreadable mess and this allows me to change the license. If you are interested you can find the orrigional projects repo here - https://github.com/nonprofitgibi/pythonappautomation
 
-Thanks to Fredrich Paulin, and Tanner Gibson
+Thanks to Fredrich Paulin, and Tanner Gibson for their work on the orrigional project
 
 This script simplifies setting a Minecraft server by automating the following tasks
 
