@@ -4,7 +4,7 @@ This is a rewrite of script my friends and I worked on a while back python 2 int
 
 Thanks to Fredrich Paulin, and Tanner Gibson for their work on the orrigional project
 
-This script simplifies setting a Minecraft server by automating the following tasks
+This script simplifies setting up a Minecraft server by automating the following tasks
 
 1. Downloads either Minecrafts Vannillia server software or alternative Spigot server
 2. Downloads and initializes java installation if appropriate
