@@ -49,18 +49,18 @@ cont()
 #Ask user which .jar file they want to download, or allow them to skip ahead
 print("\nWhich server software would you like to install? if unsure choose vanilla\n")
 print("(1)Vanilla - The standard server software from Mojang")
-print("(2)Spigot - Targeted towards modders that want to use community plugins")
+print("(2)Spigot/Bukkit - Targeted towards modders that want to use community plugins")
 print("(S)kip - Use this if you already have your .jar\n")
 
-start = 0
-while start is 0: #loop until user selects appropriate option
+start = 0 #loop until user selects appropriate option
+while start is 0:
     answer = input("Server?: ")
     if answer is ("1"):
         start = 1
         servchoice = ("vanilla")
     elif answer == ("2"):
         start = 1
-        servchoice = ("spigot")
+        servchoice = ("modded")
     elif answer is ("s"):
         start = 1
         servchoice = ("skip")
@@ -69,8 +69,7 @@ while start is 0: #loop until user selects appropriate option
 
 #Creates a variable for Mojangs server URL, along with Spigots Build tools.
 vanillaurl = ("https://s3.amazonaws.com/Minecraft.Download/versions/1.11/minecraft_server.1.11.jar")
-buildtoolsurl=("https://hub.spigotmc.org/jenkins/job/BuildTools")
-
+buildtoolsurl=("https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar")
 
 if servchoice != ("skip"):
     print("\nDownloading and configuring server software. This could take some time. Please be patient.")
@@ -79,9 +78,12 @@ if servchoice != ("skip"):
         urllib.request.urlretrieve(url, "java.jar")
 #       download(url, "java.jar")
         subprocess.call(['java', '-jar', 'java.jar'])
-    elif servchoice == ("spigot"):
+    elif servchoice == ("modded"):
         url = buildtoolsurl
         download = urllib.request.urlretrieve(url, "buildtools.jar")
+        print("Modded server is now compiling on your system. Thanks fo your patience.")
+        subprocess.call('gitcommand.BAT')
+        subprocess.call(['java', '-jar', 'spigot-1.11.jar'])
     else:
         pass
 else:
@@ -91,7 +93,7 @@ print("\nYou need to accept the EULA before continuing.")
 print("By accepting you agree to the terms listed in Mojang's user agreement")
 print("https://account.mojang.com/documents/minecraft_eula")
 
-start = 0
+start = 0 # Loop until user accepts EULA
 while start is 0:
     eula = input("Do you accept the EULA? (Y)es (N)o (Q)uit ")
     if eula is ("y"):
@@ -106,4 +108,37 @@ while start is 0:
     elif eula is ("q"):
         sys.exit()
     else:
-        print (eula, "is not a valid option")
+       print (eula, "is not a valid option")
+
+adminlist = []
+setupadmin = input("\nWould you like to set up your OP/Admin file? (Y)es (N)o: ")
+if setupadmin is ("n"):
+    pass
+elif setupadmin is ("y"):
+        start = 1
+        while start is 1:
+            admin = input("\nEnter the name of your Admin, eg. Notch: ")
+            #>>>>>>>>>>>>>>> Append Admin Variable to admin list here <<<<<<<<<<<<<<<<<<<<<<<<<<<
+            askagain = (1)
+            while askagain is (1):
+                loop = input ("Would you like to add another admin?(Y)es (N)o: ")
+                if loop is ("y"):
+                    start = 1
+                    askagain = 0
+                elif loop is ("n"):
+                    start = 0
+                    askagain = 0
+                else:
+                    print("loop is not a valid ")
+else:
+    print(setupadmin + "is not a valid option. Please select yes or no\n")
+
+start = 0
+while start is 0:
+    whitelist = input("Would you like to set up a whitelist?: (Y)es (N)o ")
+    if whitelist is ("n"):
+        start = 1
+    elif whitelist is ("y"): #<<<<<<< edit the whitelist file and enable it in server.props
+        start = 1
+    else:
+        print(whitelist + "is not a valid command. please select yes or no")
