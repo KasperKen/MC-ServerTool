@@ -10,7 +10,10 @@ License: Revised BSD
 Copywrite 2016, Kenneth Androws
 ----------------------------------
 
-This script is meant to be a spiritual continuation of the Minecraft Automation script which can be found at https://github.com/nonprofitgibi/pythonappautomation . I've elected to rewrite the code for a variety of reasons; however I'd still like to give a special thanks to Tanner Gibson, and Fredrich Paulin for their contributions to the project.
+This script is meant to be a spiritual continuation of the Minecraft Automation script 
+which can be found at https://github.com/nonprofitgibi/pythonappautomation . I've elected
+to rewrite the code for a variety of reasons; however I'd still like to give a special
+thanks to Tanner Gibson, and Fredrich Paulin for their contributions to the project.
 
 --------------------------------------------------------
 """
