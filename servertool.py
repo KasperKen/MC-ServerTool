@@ -1,3 +1,5 @@
+#!/user/bin/python3
+
 """
 ----------------------------------
 
@@ -18,17 +20,16 @@ thanks to Tanner Gibson, and Fredrich Paulin for their contributions to the proj
 --------------------------------------------------------
 """
 
-import sys #for exiting the script
-import platform #for detecting operating system
-import urllib #for downloading server files from the internet
+import sys  # for exiting the script
+import platform  # for detecting operating system
 import urllib.request
-import subprocess #for starting the .jar files
-
-def cont():  #Creates a function that asks for permission to continue
-    while (True): 
+import subprocess  # for starting the .jar files
+import os
+def cont():  # Creates a function that asks for permission to continue
+    while (True):
         answer = input("Continue?: (Y)es (Q)uit ")
         if answer is ("y"):
-            break 
+            break
         elif answer is ("q"):
             sys.exit()
         else:
@@ -39,7 +40,7 @@ print("This tool is meant to help install and configure a minecraft server.\n")
 
 cont()
 
-#Educate the user how to use the script and ask for permission to continue
+# Educate the user how to use the script and ask for permission to continue
 print("This program assumes you don't have the server downloaded already. If")
 print("you do please stop this script and place it in the same directory as")
 print("your jar file. Make sure to rename the Jar to Server.jar. You can")
@@ -47,19 +48,33 @@ print("manually change it later if you want.\n")
 
 cont()
 
-#Ask user which .jar file they want to download, or allow them to skip ahead
+# Ask user which .jar file they want to download, or allow them to skip ahead
 print("\nWhich server software would you like to install? if unsure choose vanilla\n")
 print("(1)Vanilla - The standard server software from Mojang")
 print("(2)Spigot/Bukkit - Targeted towards modders that want to use community plugins")
 print("(S)kip - Use this if you already have your .jar\n")
 
-while (True):#loop until user selects a server or skips
+# Creates a variable for Mojangs server URL, along with Spigots Build tools.
+vanillaurl = ("https://s3.amazonaws.com/Minecraft.Download/versions/1.11.2/minecraft_server.1.11.2.jar")
+buildtoolsurl = ("https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar")
+
+while (True):  # loop until user selects a server or skips
     answer = input("Server?: ")
     if answer is ("1"):
-        servchoice = ("vanilla")
+        urllib.request.urlretrieve(vanillaurl, "server.jar")
+        subprocess.call(['java', '-jar', 'server.jar'])
         break
-    elif answer == ("2"):
-        servchoice = ("modded")
+    elif answer is ("2"):
+        urllib.request.urlretrieve(buildtoolsurl, "buildtools.jar")
+        if sys.platform.startswith ("linux"):
+            os.system("git config --global --unset core.autocrif")
+            os.system("java -jar buildtools.jar")
+        elif sys.platform == ("win32"):
+            os.system('gitcommand.BAT')
+        else:
+            print("\nsorry your system is not supported at this time")
+            sys.exit()
+        os.system('java -jar spigot-1.11.jar')  # Starts modded MCserver for initial setup
         break
     elif answer is ("s"):
         servchoice = ("skip")
@@ -67,46 +82,22 @@ while (True):#loop until user selects a server or skips
     else:
         print(answer, + "is not a valid option. Please choose (1), (2), (s)")
 
-#Creates a variable for Mojangs server URL, along with Spigots Build tools.
-vanillaurl = ("https://s3.amazonaws.com/Minecraft.Download/versions/1.11/minecraft_server.1.11.jar")
-buildtoolsurl=("https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar")
 
-if servchoice != ("skip"): # Proceed only if user chose to install a server
-    print("\nDownloading and configuring server software. This could take some time. Please be patient.")
-    if servchoice == ("vanilla"):
-        urllib.request.urlretrieve(url, "java.jar")
-        download(vanillaurl, "java.jar") # Downloads minecraft server and saves it as "Java.jar"
-        subprocess.call(['java', '-jar', 'java.jar']) # Starts MCserver for initial setup
-    elif servchoice == ("modded"):
-        download = urllib.request.urlretrieve(buildtoolsurl, "buildtools.jar") #Downloads Spigot and saves it as "buildtools.jar"
-        print("Modded server is now compiling on your system. Thanks fo your patience.")
-        subprocess.call('gitcommand.BAT') # Initializes .bat script to compile spigot from source
-        subprocess.call(['java', '-jar', 'spigot-1.11.jar']) # Starts modded MCserver for initial setup
-    else:
-        pass
-else:
-    pass
-
-print("\nYou need to accept the EULA before continuing.")
-print("By accepting you agree to the terms listed in Mojang's user agreement")
-print("https://account.mojang.com/documents/minecraft_eula")
-
-
-while (True): # Loop until user accepts EULA
+while (True):  # Loop until user accepts EULA
     eula = input("Do you accept the EULA? (Y)es (N)o (Q)uit ")
     if eula is ("y"):
         with open('eula.txt', 'r') as file:
             data = file.readlines()
             data[2] = ("eula=true\n")
             with open("eula.txt", 'w') as file:
-                file.writelines( data )
+                file.writelines(data)
                 break
     elif eula is ("n"):
         print("you must accept the EULA before continuing")
     elif eula is ("q"):
         sys.exit()
     else:
-       print (eula + "is not a valid option")
+        print(eula + "is not a valid option")
 
 """ same issue as whitelist. admins cant be set this way just by name.
 we need to finds an alternative. maybe call out to minecraft directly
