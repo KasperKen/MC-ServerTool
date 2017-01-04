@@ -99,7 +99,19 @@ while (True):  # Loop until user accepts EULA
     else:
         print(eula + "is not a valid option")
 
-""" same issue as whitelist. admins cant be set this way just by name.
+while (True):
+    settings = input("Would you like to configure the server settings now?: ")
+    if settings is ("y"):
+        ###edit settings
+        break
+    elif settings is ("n"):
+        break
+    else:
+        print (settings + "is not a valid answer. Please select (Y)es or (N)o")
+
+
+"""
+same issue as whitelist. admins cant be set this way just by name.
 we need to finds an alternative. maybe call out to minecraft directly
 and issue a command in the server prompt
 
